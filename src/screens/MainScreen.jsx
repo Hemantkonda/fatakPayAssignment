@@ -23,6 +23,7 @@ const MainScreen = () => {
   const navigateToDetails = () => {
     navigation.navigate('DetailsScreen');
   };
+
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <Card
@@ -34,6 +35,7 @@ const MainScreen = () => {
       />
     </View>
   );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <TopSection preventBack title={SCREENS_TITLE.CREDIT_REPORT} />
@@ -67,13 +69,17 @@ const MainScreen = () => {
           <Text style={styles.titleText}>
             {SCREENS_TITLE.WHAT_IS_IMPACTING_YOUR_SCORE}
           </Text>
-          <FlatList
-            data={DUMMY_CARD_DATA}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2} 
-            contentContainerStyle={styles.cardListing}
-          />
+          {/* Wrap FlatList in a View and use a fixed height */}
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={DUMMY_CARD_DATA}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              numColumns={2}
+              contentContainerStyle={styles.cardListing}
+              scrollEnabled={false} // Prevents FlatList from interfering with ScrollView scrolling
+            />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -99,20 +105,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   graphComponent: {
-    // flex: 1,
     backgroundColor: palette.white,
     padding: 20,
     borderRadius: 20,
     flexDirection: 'column',
     gap: 10,
-    // width: '80%'
   },
   impactScoreContainer: {},
   cardListing: {
-    flex: 1, // Optional: Adds space around the list
+    flex: 1,
   },
   cardContainer: {
-    flex: 1, // Optional: Adds space between each card
-    // flexShrink: 1
+    flex: 1,
   },
 });
